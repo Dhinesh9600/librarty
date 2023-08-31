@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Personal Library</title>
+</head>
+<body>
+    
+    <center>
+        <body style="background-color:rgb(10, 148, 190);"></body>
+        <h1 style="background-color:rgb(11, 209, 133);">My Personal Library</h1>
+        <h1 style="color:rgb(6, 214, 152);">My Personal Library</h1>
+  <h1>My Personal Library</h1>
+</center>
+  <div>
+    <center>
+    <h2>Add a Book</h2>
+    <label>Title: <input type="text" id="title"></label>
+    <label>Author: <input type="text" id="author"></label>
+    <label>Read: <input type="checkbox" id="isRead"></label>
+    <button onclick="addBook()">Add Book</button>
+</center>
+  </div>
+
+  <div>
+    <h1 style="background-color:rgb(11, 209, 133);">My Library List</h1>
+    <h2>My Library List</h2>
+    <ul id="libraryList"></ul>
+  </div>
+
+  <script>
+    class Book {
+      constructor(title, author, isRead) {
+        this.title = title;
+        this.author = author;
+        this.isRead = isRead;
+      }
+
+      toggleReadStatus() {
+        this.isRead = !this.isRead;
+      }
+    }
+
+    const library = [];
+
+    function addBookToLibrary(title, author, isRead) {
+      const newBook = new Book(title, author, isRead);
+      library.push(newBook);
+    }
+
+    function removeBookFromLibrary(index) {
+      library.splice(index, 1);
+    }
+
+    function displayLibrary() {
+      const libraryList = document.getElementById('libraryList');
+      libraryList.innerHTML = '';
+
+      library.forEach((book, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `${book.title} by ${book.author} - ${book.isRead ? 'Read' : 'Not read'}`;
+
+        const toggleButton = document.createElement('button');
+        toggleButton.textContent = 'Toggle Read Status';
+        toggleButton.addEventListener('click', () => {
+          toggleReadStatus(index);
+          displayLibrary();
+        });
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.addEventListener('click', () => {
+          removeBookFromLibrary(index);
+          displayLibrary();
+        });
+
+        listItem.appendChild(toggleButton);
+        listItem.appendChild(removeButton);
+
+        libraryList.appendChild(listItem);
+      });
+    }
+
+    function toggleReadStatus(index) {
+      library[index].toggleReadStatus();
+    }
+
+    function addBook() {
+      const title = document.getElementById('title').value;
+      const author = document.getElementById('author').value;
+      const isRead = document.getElementById('isRead').checked;
+
+      addBookToLibrary(title, author, isRead);
+      displayLibrary();
+    }
+
+    displayLibrary();
+  </script>
+</body>
+</html>
